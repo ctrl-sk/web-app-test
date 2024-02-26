@@ -1,0 +1,9 @@
+{
+    "apps":
+    [
+        {
+            "appId": "mytextapp01",
+            "iosPath": "iMyApp"
+        }
+    ]
+}
