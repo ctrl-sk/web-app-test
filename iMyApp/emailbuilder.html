@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Builder</title>
+    <style>
+		@import url("https://connect.mastercard-emailb2b.com/l/163061/2021-07-13/hvklf3/163061/1626187402kEZr9NZj/MC_Webpro.css");
+		@import url("https://connect.mastercard-emailb2b.com/l/163061/2021-07-13/hvklby/163061/1626187371zwVYa6q9/MC_WebNarrow.css");
+        body {
+            font-family:  Mark for MC Narrow W00, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+			background: #cec9c3;
+        }
+
+        #app {
+            display: flex;
+            max-width: 980px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #sidebar {
+            flex: 0 0 200px;
+            background-color: #f3f0ee;
+            padding: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 40px);
+			position: fixed;
+    	    top: 0;
+			left: 0;
+			bottom: 0;
+			width: 200px;
+			box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45);
+        }
+
+        #components {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h1 {
+			font-family: Mark Web Pro, sans-serif;
+			font-weight: lighter;
+            text-align: center;
+        }
+		
+		h2 {
+			font-family: Mark Web Pro, sans-serif;
+			font-weight: lighter;
+		}
+		
+		button {
+			font-family:  Mark for MC Narrow W00, sans-serif;
+			font-size: 15px;
+		}
+
+        button.category {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%!important;
+			background: #222221;
+			color: #fcfbfa;
+			width: auto;
+			padding: 10px 24px;
+			border: 0;
+			border-radius: 8px;
+			-webkit-transition-duration: 0.4s; /* Safari */
+			transition-duration: 0.4s;
+        }
+		
+		button.category:hover {
+			background: #444340;
+		}
+				
+        .component {
+            border: 1px solid #fcfbfa;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+			background: #cec9c3;
+        }
+		
+		.component-buttons {
+            display: none;
+            position: absolute;
+            top: 16px;
+            right: 8px;
+        }
+		
+		.component-buttons button {
+			margin: 0 2px;
+			padding: 4px 8px;
+			background: #141413;
+			color: #fcfbfa;
+			font-size: 14px;
+			border: 0;
+			border-radius: 4px;
+		}
+
+        .component:hover .component-buttons {
+            display: block;
+        }
+		
+		#csAtrr {
+            position: fixed;
+            bottom: 24px;
+            right: 40px;	
+			color: #555250; 
+        }
+
+        #doneBtn {
+            position: fixed;
+            top: 24px;
+            right: 40px;
+			width: auto;
+			background: #cf4500;
+			color: #ffffff;
+			padding: 10px 32px;
+			border:0;
+			border-radius: 40px;
+			box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+			-webkit-transition-duration: 0.4s; /* Safari */
+			transition-duration: 0.4s;
+        }
+		
+		#doneBtn:hover {
+			background: #852d01;
+		}
+		.modal-button {
+			margin: 16px 5px; /* This will center the button horizontally */
+			width: auto;
+			background: #cf4500;
+			color: #ffffff;
+			padding: 10px 32px;
+			border:0;
+			border-radius: 40px!important;
+        }
+		#closeM {
+			float: right;
+			background: #444340;
+		}
+		.preview-tooltip {
+            position: fixed;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 100;
+        }
+		.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 16px auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 720px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+	<h1 style="margin-top:24px;">Email template builder</h1>
+	<p id="guidance" style="margin-top: 16px; text-align: center;">Select components from the sidebar to start building your template.</p>
+    <div id="app">
+        <div id="sidebar">
+            <h2 style="margin:24px 0;">Components</h2>
+            <button class="category" data-category="Header">Header</button>
+            <button class="category" data-category="Footer">Footer</button>
+            <button class="category" data-category="Single Column">Single Column</button>
+            <button class="category" data-category="Two Columns">Two Columns</button>
+            <button class="category" data-category="Text">Text</button>
+            <button class="category" data-category="Section title">Section title</button>
+            <button class="category" data-category="Image">Image</button>
+        </div>
+        <div id="components"></div>
+        <button id="doneBtn">Preview template</button>
+		<div id="csAtrr">Built by <img alt="Mastercard" border="0" valign="top" src="https://connect.mastercard-emailb2b.com/l/163061/2021-06-16/hp1rbt/163061/1623848369tuuZJ3un/MasterCard_Logo.png" style="width:40px; height:auto; margin:0 8px;" /><strong>Creative Studio</strong><br /><span style="float: right; font-size: 70%; opacity: 70%; margin-top:-6px;">using GenAI</span></div>
+    </div>
+	
+	<div class="preview-tooltip" id="previewTooltip"></div>
+	
+	<!-- Modal for previewing HTML -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+			<button id="copyBtn" class="modal-button">Copy to clipboard</button>
+            <button id="downloadBtn" class="modal-button">Download HTML</button>
+			<button id="closeM" class="modal-button">Keep editing</button>
+            <div id="previewContent">
+                <!-- Preview content will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+	
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const components = {
+                "Header": `<div style="width:100%;max-width:640px;margin:0 auto;background-color:#141413;margin:auto;">
+			<table role="presentation" style="width:100%;border:0;border-collapse:collapse;border-spacing:0;margin:0;background:#141413;">
+            <tr>
+				<td style="padding:16px 32px;">
+					<img alt="Mastercard" border="0" valign="top" width="66" height="41" src="https://connect.mastercard-emailb2b.com/l/163061/2021-06-16/hp1rbt/163061/1623848369tuuZJ3un/MasterCard_Logo.png" style="width:66px; height:41px; display:block; margin:0;" />
+				</td>
+				<td pardot-region="date" align="right" valign="middle" style="padding:16px 32px; align-content: flex-end;vertical-align: middle;">
+					<p style="margin:0;font-family: 'MarkWebPro-Heavy', Century Gothic, sans-serif; line-height: 17px; font-size: 14px; color: #fcfbfa; font-weight: bold;"><span style="color:#fcfbfa;text-transform: uppercase; ;">Edition&nbsp;01</span> &nbsp;|&nbsp; January&nbsp;2024</p>
+				</td>
+            </tr>
+          	</table>
+		</div>`,
+                "Footer": `<!-- footer BEGIN -->
+		<div style="width:100%;max-width:640px;margin:0 auto;background-color: #e8e5e1;">
+			<table role="presentation" style="width:100%;border:0;border-collapse:collapse;border-spacing:0;background:#e8e5e1;">
+            <tr>
+              <td style="padding:32px;">
+				<p pardot-region="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 18px; font-size: 12px; color: #555250; font-weight: normal; margin:0 0 16px 0;">
+				Terms and conditions
+				<br />
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed blandit libero volutpat sed cras ornare arcu dui vivamus. Enim sed faucibus turpis in eu mi bibendum neque egestas. Orci nulla pellentesque dignissim enim sit amet venenatis. Ipsum consequat nisl vel pretium lectus. Viverra suspendisse potenti nullam ac tortor vitae. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Purus in massa tempor nec feugiat nisl pretium. Magna sit amet purus gravida quis blandit. Mattis nunc sed blandit libero volutpat sed cras. Malesuada proin libero nunc consequat interdum varius sit. Scelerisque mauris pellentesque pulvinar pellentesque.
+				<br />
+				Aliquam purus sit amet luctus venenatis lectus magna fringilla urna. Tristique sollicitudin nibh sit amet commodo nulla facilisi. Dictum sit amet justo donec enim. Egestas congue quisque egestas diam in arcu cursus. Proin libero nunc consequat interdum varius sit amet. Aliquam eleifend mi in nulla posuere sollicitudin aliquam. Massa enim nec dui nunc. Ipsum faucibus vitae aliquet nec ullamcorper sit amet risus. Duis at consectetur lorem donec massa. Diam maecenas ultricies mi eget mauris pharetra et.</p>
+				  
+				<p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 18px; font-size: 12px; color: #555250; font-weight: normal; margin:0 0 16px 0;">Want to change how you receive these emails? You can <a data-targettype="webpage" href="https://www.mastercard.us/en-us/vision/corp-responsibility/commitment-to-privacy/privacy/email-opt-out.html" target="_blank"><span style="color:#F37437;text-decoration: underline;">update your preferences</span></a> or <a href="{{Unsubscribe}}"><span style="color:#F37437;text-decoration: underline;">unsubscribe</span></a> from the list.</p>
+				  
+                <p style="font-family: Mark Web Pro, Century Gothic, sans-serif;font-size:12px;color:#555250;margin:0 0 16px 0;"><a href="https://mastercard.com/crossborder" style="color:#F37437;">Home</a>&nbsp;|&nbsp;<a href="https://b2b.mastercard.com/cross-border-services/legal/" style="color:#F37437;">Legal</a>&nbsp; |&nbsp;<a href="https://b2b.mastercard.com/media/nivg5f0f/mastercard-cross-border-services-licensing-info.pdf" style="color: #F37437;">Licensing</a>&nbsp;|&nbsp;<a href="https://www.mastercard.com/global/en/vision/corp-responsibility/commitment-to-privacy/privacy.html" style="color: #F37437;">Privacy</a></p>
+				
+				<p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 18px; font-size: 12px; color: #141413; font-weight: normal; margin:0 0 16px 0;">Mastercard is a registered trademark, and the circles design is a trademark,<br />of Mastercard International Incorporated.</p>
+                
+				<p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 18px; font-size: 12px; color: #141413; font-weight: normal;">© 2024 Mastercard. All rights reserved.</p>
+				</td>
+            </tr>
+			</table>
+		</div>
+<!-- footer END -->`,
+                "Single Column": `<!-- image, title, body: single column BEGIN -->
+		<div pardot-repeatable="" style="width:100%;max-width:640px;margin:0 auto;background-color: #f3f0ee;">
+			<table role="presentation" style="width:100%;border:0;border-collapse:collapse;border-spacing:0;background:#f3f0ee;">
+            <tr>
+				<td style="padding:32px;">
+					<img pardot-region="" pardot-region-type="image" src="https://connect.mastercard-emailb2b.com/l/163061/2023-12-20/srhtcb/163061/1703063893Wk0S1Tzy/dummy_576x323_ffffff_cccccc.png" width="576" height="auto" alt="" style="width:100%;height:auto;display:block;max-width:576px;height:auto;" />
+					<p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 25px; font-size: 20px; color: #555250; font-weight: normal;margin:16px 0;">Heading in one line in sentence case</p>
+					<p pardot-region="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #555250; font-weight: normal;margin:16px 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a pardot-region="" pardot-region-type="link" href="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #F37437; font-weight: normal;padding:12px 0;">Read now</a><img src="https://connect.mastercard-emailb2b.com/l/163061/2023-08-30/rnrrvg/163061/1693385887R7cTIYy7/arrow_long_right.png" alt="right-arrow" style="display:inline-block;margin-left:4px;width:18px;height:auto;vertical-align: middle;" />
+				</td>
+            </tr>
+			</table>
+		</div>
+<!-- image, title, body: single column END -->`,
+                "Two Columns": `<!-- image, title, body: two column BEGIN -->
+		<div pardot-repeatable="" style="width:100%;max-width:640px;margin:0 auto;background-color: #fcfbfa;padding:0;">
+			<table role="presentation" width="100%" style="border-collapse:collapse;border:0;border-spacing:0;margin:0;background:#fcfbfa;"> 
+				<tr> 
+				<td style="padding:0;margin:0;" valign="top"> 
+            <!--[if mso]> 
+						<table role="presentation" width="100%"> 
+						<tr> 
+						<td style="width:50%;padding:20px;" valign="top"> 
+						<![endif]-->
+            <div class="column" style="width:317px;max-width:100%;display:inline-block;vertical-align:top;padding:0;">
+              <div class="space-fix" style="padding:0 16px 32px 32px;">
+				  <div style="background:#f3f0ee; border-radius: 24px; padding-bottom:16px;">
+                <img pardot-region="" pardot-region-type="image" src="https://connect.mastercard-emailb2b.com/l/163061/2023-12-20/srhqr1/163061/1703059471Hlzngzhq/dummy_560x314_ffffff_cccccc.png" alt="" width="100%" height="auto" style="display:block;max-width:100%;height:auto;padding:0;border-radius: 24px 24px 0 0;" />
+                <p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 25px; font-size: 20px; color: #555250; font-weight: normal;margin:12px 0;padding:0 24px;">Heading in up to two lines in sentence case</p>
+                <p pardot-region="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #555250; font-weight: normal;margin:0 0 8px 0;padding:0 24px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+				<a pardot-region="" pardot-region-type="link" href="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #F37437; font-weight: bold;padding:16px 0 0 24px;">Read now</a><img src="https://connect.mastercard-emailb2b.com/l/163061/2023-08-30/rnrrvg/163061/1693385887R7cTIYy7/arrow_long_right.png" alt="right-arrow" style="display:inline-block;margin-left:4px;width:18px;height:auto;vertical-align: middle;" />
+					  </div>
+              </div>
+            </div>
+            <!--[if mso]> 
+						</td> 
+						<td style="width:50%;padding:20px;" valign="top"> 
+						<![endif]-->
+            <div class="column" style="width:317px;max-width:100%;display:inline-block;vertical-align:top;padding-bottom:0;">
+              <div class="space-fix" style="padding:0 32px 32px 16px;">
+				  <div style="background:#f3f0ee; border-radius: 24px; padding-bottom:16px;">
+                <img pardot-region="" pardot-region-type="image" src="https://connect.mastercard-emailb2b.com/l/163061/2023-12-20/srhqr1/163061/1703059471Hlzngzhq/dummy_560x314_ffffff_cccccc.png" alt="" width="100%" height="auto" style="display:block;max-width:100%;height:auto;padding:0;border-radius:24px 24px 0 0;" />
+                <p pardot-region="" style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 25px; font-size: 20px; color: #555250; font-weight: normal;margin:12px 0;padding:0 24px;">Heading in up to two lines in sentence case</p>
+                <p pardot-region="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #555250; font-weight: normal;margin:0 0 8px 0;padding:0 24px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+				<a pardot-region="" pardot-region-type="link" href="" style="font-family: Mark for MC Narrow W00, Century Gothic, sans-serif; line-height: 21px; font-size: 14px; color: #F37437; font-weight: bold;padding:16px 0 0 24px;">Read now</a><img src="https://connect.mastercard-emailb2b.com/l/163061/2023-08-30/rnrrvg/163061/1693385887R7cTIYy7/arrow_long_right.png" alt="right-arrow" style="display:inline-block;margin-left:4px;width:18px;height:auto;vertical-align: middle;" />
+				  </div>
+              </div>
+            </div>
+            <!--[if mso]> 
+						</td> 
+						</tr> 
+						</table> 
+						<![endif]-->
+            </td></tr></table>
+		</div>
+<!-- image, title, body: two column END -->`,
+                "Text": "<p>This is a paragraph</p>",
+                "Section title": `<!-- section title BEGIN -->
+		<div pardot-repeatable="section-title" style="width:100%;max-width:640px;margin:0 auto;background-color: #fcfbfa;padding:32px 0">
+			<table role="presentation" width="100%" style="border-collapse:collapse;border:0;border-spacing:0;margin:0;background:#fcfbfa;"> 
+				<tr>
+                <td style="padding:0 32px;font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 28px; font-size: 28px; color: #555250; font-weight: lighter;"><p pardot-region="">Section title in one line</p></td>
+				</tr>
+			</table>
+		</div>
+<!-- section title END -->`,
+                "Image": "<img src='image_url' alt='Image'>"
+            };
+
+            const componentsDiv = document.getElementById("components");
+
+            let selectedComponents = [];
+
+            function renderComponents() {
+            componentsDiv.innerHTML = "";
+            selectedComponents.forEach((component, index) => {
+                const componentDiv = document.createElement("div");
+                componentDiv.classList.add("component");
+                componentDiv.innerHTML = component;
+				
+				componentDiv.id = `component_${index}`;
+
+                const componentButtonsDiv = document.createElement("div");
+                componentButtonsDiv.classList.add("component-buttons");
+
+                const moveUpBtn = document.createElement("button");
+                moveUpBtn.textContent = "↑";
+                moveUpBtn.addEventListener("click", function() {
+                    if (index > 0) {
+                        [selectedComponents[index], selectedComponents[index - 1]] = [selectedComponents[index - 1], selectedComponents[index]];
+                        renderComponents();
+                    }
+                });
+                componentButtonsDiv.appendChild(moveUpBtn);
+
+                const moveDownBtn = document.createElement("button");
+                moveDownBtn.textContent = "↓";
+                moveDownBtn.addEventListener("click", function() {
+                    if (index < selectedComponents.length - 1) {
+                        [selectedComponents[index], selectedComponents[index + 1]] = [selectedComponents[index + 1], selectedComponents[index]];
+                        renderComponents();
+                    }
+                });
+                componentButtonsDiv.appendChild(moveDownBtn);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.textContent = "Remove";
+                removeBtn.addEventListener("click", function() {
+                    selectedComponents.splice(index, 1);
+                    renderComponents();
+					updateDoneButtonVisibility();
+                });
+                componentButtonsDiv.appendChild(removeBtn);
+
+                componentDiv.appendChild(componentButtonsDiv);
+                componentsDiv.appendChild(componentDiv);
+            });
+        }
+
+            function addToSelectedComponents(category) {
+                selectedComponents.push(`<div>${components[category]}</div>`);
+                renderComponents();
+				updateDoneButtonVisibility();
+				// Scroll to the newly added component
+				const newComponentIndex = selectedComponents.length - 1;
+				const newComponentId = `component_${newComponentIndex}`;
+				const newComponent = document.getElementById(newComponentId);
+				if (newComponent) {
+					newComponent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				}
+            }
+
+			function showPreviewTooltip(componentHTML, event) {
+                const previewTooltip = document.getElementById("previewTooltip");
+                previewTooltip.innerHTML = componentHTML;
+                previewTooltip.style.display = "block";
+                previewTooltip.style.top = `${event.clientY}px`;
+                previewTooltip.style.left = `${event.clientX + 10}px`;
+            }
+
+            function hidePreviewTooltip() {
+                const previewTooltip = document.getElementById("previewTooltip");
+                previewTooltip.style.display = "none";
+            }
+
+            const categoryButtons = document.querySelectorAll('.category');
+            categoryButtons.forEach(button => {
+                button.addEventListener('mouseover', () => {
+                    const category = button.getAttribute('data-category');
+                    const componentHTML = components[category];
+                    showPreviewTooltip(componentHTML, event);
+                });
+                button.addEventListener('mouseout', hidePreviewTooltip);
+            });
+
+			
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    addToSelectedComponents(category);
+                });
+            });
+			
+			const headerContent = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta content="yes" name="apple-touch-fullscreen">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<!--[if !mso]><!-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!--<![endif]-->
+<title>Mastercard</title>
+<!--[if mso]> 
+	<style type="text/css"> 
+	table {border-collapse:collapse;border:0;border-spacing:0;margin:0;} 
+	div, td {padding:0;} 
+	div {margin:0 !important;} 
+	</style> 
+	<noscript> 
+	<xml> 
+	<o:OfficeDocumentSettings> 
+	<o:PixelsPerInch>96</o:PixelsPerInch> 
+	</o:OfficeDocumentSettings> 
+	</xml> 
+	</noscript> 
+	<![endif]-->
+<style type="text/css">
+/* @import url(https://connect.mastercard-emailb2b.com/l/163061/2024-02-06/t7rl4g/163061/1707211103YhbNzTgZ/MCwebfonts.css); */
+@import url("https://connect.mastercard-emailb2b.com/l/163061/2021-07-13/hvklf3/163061/1626187402kEZr9NZj/MC_Webpro.css");
+@import url("https://connect.mastercard-emailb2b.com/l/163061/2021-07-13/hvklby/163061/1626187371zwVYa6q9/MC_WebNarrow.css");
+div, p, a, li, td {
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Mark for MC Narrow W00,Century Gothic,sans-serif!important;
+    font-weight: normal;
+}
+* a {
+    color: inherit;
+    text-decoration: none;
+}
+p {
+	margin:0;		
+}
+table {
+	border:0;
+	border-spacing: 0;
+	border-collapse:collapse;
+	cellspacing: 0;
+}
+h1, h2 {
+	margin:0;
+	font-family: Mark Web Pro,Century Gothic,sans-serif!important;
+	font-weight: lighter;
+}
+.button {
+	margin: 16px 0;
+}
+@media screen and ( max-device-width : 480px ) , screen and ( max-width : 480px ){
+.column {
+    width: 100%!important;
+	padding: 0!important;
+}
+.space-fix {
+	padding: 0 32px 32px 32px!important;	
+}
+.nomob {
+    display: none!important;
+}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;word-spacing:normal;background-color:#cec9c3;">
+	<div width="100%" style="width:100%;background-color:#cec9c3;">
+		
+<!-- spacer 32px BEGIN -->
+		<table class="spacer" width="100%" style="width:100%;line-height:32px;height:32px;mso-line-height-rule:exactly;border-collapse:collapse;"><tr><td>&nbsp;</td></tr></table>
+<!-- spacer 32px END -->
+
+		<!--[if mso]> 
+		<table role="presentation" align="center" style="width:640px;"> 
+		<tr> 
+		<td style="padding:20px 0;"> 
+		<![endif]-->`;
+                const footerContent = `<!-- CS attribution BEGIN -->
+		<div pardot-removable="" style="width:100%;max-width:640px;margin:0 auto;background-color:#cec9c3;">
+			<table role="presentation" style="width:100%;border:0;border-collapse:collapse;border-spacing:0;background:#cec9c3;">
+            <tr>
+            	<td align="center" style="align:center;padding:16px 32px;">
+					<p style="font-family: Mark Web Pro, Century Gothic, sans-serif; line-height: 18px; font-size: 12px; color: #555250; font-weight: normal;">Designed  by&nbsp; <img alt="Mastercard" border="0" valign="top" width="24" height="auto" src="https://connect.mastercard-emailb2b.com/l/163061/2021-06-16/hp1rbt/163061/1623848369tuuZJ3un/MasterCard_Logo.png" style="width:24px; height:auto; display:inline-block; margin:0;" /> &nbsp;Creative Studio</p>
+				</td>
+            </tr>
+			</table>
+		</div>
+<!-- CS attribution END -->
+
+
+        
+        <!--[if mso]> 
+				</td> 
+				</tr> 
+				</table> 
+				<![endif]-->
+
+	</div>
+</body>
+</html>`;
+			
+			function updateDoneButtonVisibility() {
+				const doneBtn = document.getElementById("doneBtn");
+				const guidance = document.getElementById("guidance");
+				if (selectedComponents.length > 0) {
+					doneBtn.style.display = "block";
+					guidance.style.visibility = "hidden";
+				} else {
+					doneBtn.style.display = "none";
+					guidance.style.visibility = "visible";
+				}
+			}
+			
+			updateDoneButtonVisibility();
+			
+			function generateHTMLContent() {
+				return `${headerContent}${selectedComponents.join("\n")}${footerContent}`;
+			}
+			
+            const doneBtn = document.getElementById("doneBtn");
+			doneBtn.addEventListener("click", function() {
+				const htmlContent = generateHTMLContent();
+				const contentDiv = document.getElementById("previewContent");
+				contentDiv.innerHTML = htmlContent;
+				
+				const modal = document.getElementById("previewModal");
+				modal.style.display = "block";
+			});
+			
+				window.addEventListener("click", function(event) {
+   				const modal = document.getElementById("previewModal");
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+				
+			const closeM = document.getElementById("closeM");
+			closeM.addEventListener("click", function() {
+				const modal = document.getElementById("previewModal");
+					modal.style.display = "none";
+			});
+
+			
+			const copyBtn = document.getElementById("copyBtn");
+			copyBtn.addEventListener("click", function() {
+				const htmlContent = generateHTMLContent();
+				// Create a temporary textarea element
+				const textarea = document.createElement('textarea');
+				textarea.value = htmlContent;
+				document.body.appendChild(textarea);
+
+				// Select and copy the HTML content
+				textarea.select();
+				const copySuccess = document.execCommand('copy');
+
+				// Remove the temporary textarea
+				document.body.removeChild(textarea);
+
+				// Show the popup if copy was successful
+				if (copySuccess) {
+					showPopup();
+				}
+			});
+
+			function showPopup() {
+				// Create overlay
+				const overlay = document.createElement('div');
+				overlay.style.position = 'fixed';
+				overlay.style.top = '0';
+				overlay.style.left = '0';
+				overlay.style.width = '100%';
+				overlay.style.height = '100%';
+				overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+				overlay.style.zIndex = '9998'; // Ensure overlay is below popup
+				document.body.appendChild(overlay);
+
+				// Create a popup element
+				const popup = document.createElement('div');
+				popup.textContent = '✓ HTML template copied to clipboard!';
+				popup.style.position = 'fixed';
+				popup.style.top = '50%';
+				popup.style.left = '50%';
+				popup.style.transform = 'translate(-50%, -50%)';
+				popup.style.backgroundColor = '#f4f4f4';
+				popup.style.padding = '20px';
+				popup.style.border = '1px solid #ccc';
+				popup.style.borderRadius = '5px';
+				popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+				popup.style.zIndex = '9999';
+
+				// Append the popup to the body
+				document.body.appendChild(popup);
+
+				// Hide the popup and overlay after a certain time
+				setTimeout(() => {
+					document.body.removeChild(popup);
+					document.body.removeChild(overlay);
+				}, 2000); // Adjust the time the popup is displayed
+			}
+
+            // Add event listener to the download button in the modal
+			const downloadBtn = document.getElementById("downloadBtn");
+			downloadBtn.addEventListener("click", function() {
+				const htmlContent = generateHTMLContent();
+				// Create a blob from the HTML content
+				const blob = new Blob([htmlContent], { type: 'text/html' });
+
+				// Create a temporary anchor element
+				const anchor = document.createElement('a');
+				anchor.href = URL.createObjectURL(blob);
+				anchor.download = 'email_template.html';
+
+				// Simulate a click on the anchor element to trigger download
+				anchor.click();
+
+				// Clean up by revoking the object URL
+				URL.revokeObjectURL(anchor.href);
+			});
+
+        });
+    </script>
+</body>
+</html>
